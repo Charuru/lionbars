@@ -5,7 +5,7 @@ body, html { height: 100%; }
 
 body {
 	font-size: 62.5%; /* Causes base font size to be ~10px */
-	background: #aeaeae;
+	background: #fefefe;
 }
 
 .box1, .box2, .box3, .box4, .box5 { float: left; display: block; width: 200px; height: 150px; overflow: auto; font: 11px/16px helvetica; margin: 50px; border: 1px solid #ccc; }
