@@ -22,19 +22,43 @@
 					
 					// hide the default scrollbar
 					hideScrollbars(target, addVScroll, addHScroll);
+					reduceScrollbarsWidthHeight(target);
+					
+					// prepare for next element
+					resetVars();
 				}
 			}
 		}
 		
 		// Core functions
+		function resetVars() {
+			vScrollWidth = 0;
+			hScrollWidth = 0;
+			addHScroll=false;
+			addVScroll=false;
+			paddingTop = 0;
+			paddingLeft = 0;
+			paddingBottom = 0;
+			paddingRight = 0;
+		}
+		function reduceScrollbarsWidthHeight(el) {
+			var el = $(el);
+			
+			if (addVScroll && addHScroll) {
+				el.find('.lb-v-scrollbar').css({ "height" : el.height()-12 });
+				el.find('.lb-h-scrollbar').css({ "width" : el.width()-12 });
+			} else {
+				el.find('.lb-v-scrollbar').css({ "height" : el.height()-4 });
+				el.find('.lb-h-scrollbar').css({ "width" : el.width()-4 });
+			}
+		}
 		function hideScrollbars(elem, vscroll, hscroll) {
 			var el = $(elem);
 			
-			if (vscroll) {
+			if (vscroll || hscroll) {
 				el.css({ "overflow" : 'hidden' });
 				movePadding(el, el.find('.lb-wrap'));
 				resizeInnerWrap(el, el.find('.lb-wrap'));
-				el.find('.lb-wrap').css({ "overflow" : 'auto' });
 			}
 		}
 		function movePadding(from, to) {
@@ -58,9 +82,10 @@
 			var mainEl = $(main);
 			var childEl = $(child);
 			
+			mainEl.css({ "position" : 'relative' });
 			childEl.css({
 				"width" : mainEl.width()+vScrollWidth - paddingLeft - paddingRight, 
-				"height" : mainEl.height() - paddingTop - paddingBottom 
+				"height" : mainEl.height()+hScrollWidth - paddingTop - paddingBottom 
 			});
 		}
 		function setVScrollbarWidth(el) {
@@ -82,12 +107,12 @@
 			}
 			wrap.wrapInner('<div class="lb-content"></div>');
 			if (vscroll) {
-				wrap.prepend('<div class="lb-v-scrollbar"></div>');
-				wrap.find('.lb-v-scrollbar').append('<div class="lb-v-scrollbar-slider"></div>');
+				el.prepend('<div class="lb-v-scrollbar"></div>');
+				el.find('.lb-v-scrollbar').append('<div class="lb-v-scrollbar-slider"></div>');
 			}
 			if (hscroll) {
-				wrap.prepend('<div class="lb-h-scrollbar"></div>');
-				wrap.find('.lb-h-scrollbar').append('<div class="lb-h-scrollbar-slider"></div>');
+				el.prepend('<div class="lb-h-scrollbar"></div>');
+				el.find('.lb-h-scrollbar').append('<div class="lb-h-scrollbar-slider"></div>');
 			}
 
 			// preparation for the next element
