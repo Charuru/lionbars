@@ -11,6 +11,7 @@
 		
 		// Main Loop
 		mainLoop();
+		
 		function mainLoop() {
 			for (var i=0; elements[i] !== undefined; i++) {
 				if (needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars')) {
@@ -23,6 +24,7 @@
 					// hide the default scrollbar
 					hideScrollbars(target, addVScroll, addHScroll);
 					reduceScrollbarsWidthHeight(target);
+					setSlidersHeight(target);
 					
 					// prepare for next element
 					resetVars();
@@ -31,6 +33,20 @@
 		}
 		
 		// Core functions
+		function setSlidersHeight(elem) {
+			var el = $(elem);
+			
+			if (el.find('.lb-v-scrollbar')) {
+				var h1, h2, hmin, hmax, gap, height;
+				h1 = parseInt(el.find('.lb-content').height()) + parseInt(paddingTop) + parseInt(paddingBottom);
+				h2 = el.find('.lb-wrap').outerHeight();
+				hmin = 10;
+				gap = h2 - el.find('.lb-v-scrollbar').height();
+				hmax = h2 - gap - hmin;
+				height = Math.round((h2*hmax)/h1 + hmin);
+				el.find('.lb-v-scrollbar-slider').css({ "height" : height });
+			}
+		}
 		function resetVars() {
 			vScrollWidth = 0;
 			hScrollWidth = 0;
@@ -64,11 +80,11 @@
 		function movePadding(from, to) {
 			var fromEl = $(from);
 			var toEl = $(to);
-			
-			paddingTop = fromEl.css('padding-top').replace('px', '');
-			paddingLeft = fromEl.css('padding-left').replace('px', '');
-			paddingBottom = fromEl.css('padding-bottom').replace('px', '');
-			paddingRight = fromEl.css('padding-right').replace('px', '');
+					// 	
+					// paddingTop = fromEl.css('padding-top').replace('px', '');
+					// paddingLeft = fromEl.css('padding-left').replace('px', '');
+					// paddingBottom = fromEl.css('padding-bottom').replace('px', '');
+					// paddingRight = fromEl.css('padding-right').replace('px', '');
 			
 			fromEl.css({ "padding" : 0 });
 			toEl.css({
@@ -123,6 +139,8 @@
 			addVScroll = false;
 			addHScroll = false;
 			
+			getPadding(el);
+			
 			// Check for vertical scroll
 			el.prepend('<div class="lb-v-dummy"></div>');
 			if (el.width() > $('.lb-v-dummy').width()) {
@@ -142,6 +160,16 @@
 			if (addVScroll || addHScroll) {
 				return true;
 			}
+		}
+		function getPadding(elem) {
+			var el = $(elem);
+			
+			paddingTop = el.css('padding-top').replace('px', '');
+			paddingLeft = el.css('padding-left').replace('px', '');
+			paddingBottom = el.css('padding-bottom').replace('px', '');
+			paddingRight = el.css('padding-right').replace('px', '');
+			
+			// console.log(paddingTop, paddingLeft, paddingBottom, paddingRight);
 		}
 		
 		return this.each(function() {
