@@ -1,4 +1,7 @@
 (function( $ ) {
+    $.fn.hasScrollBar = function() {
+        return this.get(0).scrollHeight > this.height();
+    }
 	$.fn.lionbars = function(color, showOnMouseOver, visibleBar, visibleBg) {
 		// Initialization
 		var elements = $(this),
