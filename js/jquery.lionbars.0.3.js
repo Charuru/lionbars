@@ -100,7 +100,6 @@
 		function resizeInnerWrap(main, child) {
 			var mainEl = $(main);
 			var childEl = $(child);
-			
 			mainEl.css({ "position" : 'relative' });
 			childEl.css({
 				"width" : mainEl.width()+vScrollWidth - paddingLeft - paddingRight, 
@@ -146,18 +145,18 @@
 			
 			// Check for vertical scroll
 			el.prepend('<div class="lb-v-dummy"></div>');
-			if (el.width() > $('.lb-v-dummy').width()) {
+			if (el.height() < el.get(0).scrollHeight) {
 				addVScroll = true;
 				setVScrollbarWidth(el);
-			}
+			}			
 			el.find('.lb-v-dummy').remove();
 			
 			// Check for horizontal scroll
 			el.prepend('<div class="lb-h-dummy"></div>');
-			if (el.height() > $('.lb-h-dummy').height()) {
+			if (el.width() < el.get(0).scrollWidth) {
 				addHScroll = true;
 				setHScrollbarWidth(el);
-			}
+			}			
 			el.find('.lb-h-dummy').remove();
 			
 			if (addVScroll || addHScroll) {
