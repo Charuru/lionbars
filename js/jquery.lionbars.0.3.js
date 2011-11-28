@@ -145,7 +145,7 @@
 			
 			// Check for vertical scroll
 			el.prepend('<div class="lb-v-dummy"></div>');
-			if (el.height() < el.get(0).scrollHeight) {
+			if (el.width() > $('.lb-v-dummy').width()) {
 				addVScroll = true;
 				setVScrollbarWidth(el);
 			}			
@@ -153,7 +153,7 @@
 			
 			// Check for horizontal scroll
 			el.prepend('<div class="lb-h-dummy"></div>');
-			if (el.width() < el.get(0).scrollWidth) {
+			if (el.height() > $('.lb-h-dummy').height()) {
 				addHScroll = true;
 				setHScrollbarWidth(el);
 			}			
