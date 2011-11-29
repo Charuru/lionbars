@@ -22,12 +22,12 @@
 					target = elements[i];
 				
 					// wrap the element
-					wrap(target, addVScroll, addHScroll);
+					//wrap(target, addVScroll, addHScroll);
 					
 					// hide the default scrollbar
-					hideScrollbars(target, addVScroll, addHScroll);
-					reduceScrollbarsWidthHeight(target);
-					setSlidersHeight(target);
+					//hideScrollbars(target, addVScroll, addHScroll);
+					//reduceScrollbarsWidthHeight(target);
+					//setSlidersHeight(target);
 					
 					// prepare for next element
 					resetVars();
@@ -108,10 +108,14 @@
 			});
 		}
 		function setVScrollbarWidth(el) {
+			el.css({ "overflow" : 'auto' });
 			vScrollWidth = el.width() - el.find('.lb-v-dummy').width();
+			el.css({ "overflow" : 'hidden' });
 		}
 		function setHScrollbarWidth(el) {
+			el.css({ "overflow" : 'auto' });
 			hScrollWidth = el.height() - el.find('.lb-h-dummy').height();
+			el.css({ "overflow" : 'hidden' });
 		}
 		function wrap(el, vscroll, hscroll) {
 			var el = $(el);
@@ -143,26 +147,25 @@
 			addHScroll = false;
 			
 			getPadding(el);
+			el.css({ "overflow" : 'hidden' });
 			
-			// Check for vertical scroll
-			el.prepend('<div class="lb-v-dummy"></div>');
-			if (el.width() > $('.lb-v-dummy').width()) {
+			// check for vertical scrollbars
+			if (el.get(0).scrollHeight > el.get(0).clientHeight) {
 				addVScroll = true;
-				setVScrollbarWidth(el);
+				// setVScrollbarWidth(el);
 			}
-			el.find('.lb-v-dummy').remove();
 			
-			// Check for horizontal scroll
-			el.prepend('<div class="lb-h-dummy"></div>');
-			if (el.height() > $('.lb-h-dummy').height()) {
+			// check for horizontal scrollbars
+			if (el.get(0).scrollWidth > el.get(0).clientWidth) {
 				addHScroll = true;
-				setHScrollbarWidth(el);
+				// setHScrollbarWidth(el);
 			}
-			el.find('.lb-h-dummy').remove();
+			
+			el.css({ "overflow" : 'auto' });
 			
 			if (addVScroll || addHScroll) {
-				return true;
-			}
+ 				return true;
+ 			}			
 		}
 		function getPadding(elem) {
 			var el = $(elem);

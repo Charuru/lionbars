@@ -1,3 +1,3 @@
 (function ($, undefined) {
-	$('div').lionbars();
+	$('.box6').lionbars();
 }(jQuery));
