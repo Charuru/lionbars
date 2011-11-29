@@ -105,7 +105,7 @@
 		function resizeInnerWrap(main, child) {
 			var mainEl = $(main);
 			var childEl = $(child);
-			// console.log(mainEl.width(), vScrollWidth, paddingLeft, paddingRight);
+			console.log(mainEl.width(), hScrollWidth, paddingTop, paddingBottom);
 			mainEl.css({ "position" : 'relative' });
 			childEl.css({
 				"width" : mainEl.width()+vScrollWidth - paddingLeft - paddingRight, 
@@ -119,7 +119,7 @@
 		}
 		function setHScrollbarWidth(el) {
 			el.css({ "overflow" : 'auto' });
-			hScrollWidth = el.get(0).offsetHeight - el.get(0).clientHeight - paddingTop - paddingBottom - borderTop - borderBottom;
+			hScrollWidth = el.get(0).offsetHeight - el.get(0).clientHeight - borderTop - borderBottom;
 			el.css({ "overflow" : 'hidden' });
 		}
 		function wrap(el, vscroll, hscroll) {
