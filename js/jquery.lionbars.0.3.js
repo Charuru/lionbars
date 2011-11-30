@@ -42,13 +42,27 @@
 			
 			if (el.find('.lb-v-scrollbar')) {
 				var h1, h2, hmin, hmax, gap, height;
-				h1 = parseInt(el.find('.lb-content').height()) + parseInt(paddingTop) + parseInt(paddingBottom);
-				h2 = el.find('.lb-wrap').outerHeight();
+				h1 = el.find('.lb-wrap').get(0).scrollHeight;
+				h2 = el.find('.lb-wrap').get(0).offsetHeight - hScrollWidth;
+				// h1 = parseInt(el.find('.lb-content').height()) + parseInt(paddingTop) + parseInt(paddingBottom);
+				// h2 = el.find('.lb-wrap').outerHeight();
 				hmin = 10;
 				gap = h2 - el.find('.lb-v-scrollbar').height();
 				hmax = h2 - gap - hmin;
 				height = Math.round((h2*hmax)/h1 + hmin);
 				el.find('.lb-v-scrollbar-slider').css({ "height" : height });
+				console.log(h1, h2);
+			}
+			if (el.find('.lb-h-scrollbar')) {
+				var h1, h2, hmin, hmax, gap, height;
+				h1 = el.find('.lb-wrap').get(0).scrollWidth;
+				h2 = el.find('.lb-wrap').get(0).offsetWidth - vScrollWidth;
+				hmin = 10;
+				gap = h2 - el.find('.lb-h-scrollbar').width();
+				hmax = h2 - gap - hmin;
+				height = Math.round((h2*hmax)/h1 + hmin);
+				el.find('.lb-h-scrollbar-slider').css({ "width" : height });
+				console.log(h1, h2);
 			}
 		}
 		function resetVars() {
