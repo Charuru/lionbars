@@ -40,6 +40,9 @@
 					// Set variables needed to calculate scroll speed, etc.
 					setScrollRatios(target);
 					
+					// Set events
+					setEvents(target);
+					
 					// prepare for next element
 					resetVars();
 				}
@@ -47,10 +50,30 @@
 		}
 		
 		// Core functions
+		function setEvents(elem) {
+			var el = $(elem);
+			
+			if (addVScroll) {
+				el.find('.lb-wrap').scroll(function(e) {
+					el.find('.lb-v-scrollbar-slider').css({ "top" : -$(this).scrollTop()/el.attr('vratio') });
+				});
+			}
+			
+			if (addHScroll) {
+				el.find('.lb-wrap').scroll(function(e) {
+					el.find('.lb-h-scrollbar-slider').css({ "left" : -$(this).scrollLeft()/el.attr('hratio') });
+				});
+			}
+		}
 		function setScrollRatios(elem) {
-			vRatio = (offsetHeight - scrollHeight - borderTop - borderBottom)/(vLbHeight - vSliderHeight);
-			hRatio = (offsetWidth - scrollWidth - borderLeft - borderRight)/(hLbHeight - hSliderHeight);
-			console.log(vRatio, hRatio);
+			vRatio = (offsetHeight - $(elem).find('.lb-wrap').get(0).scrollHeight - borderTop - borderBottom)/(vLbHeight - vSliderHeight);
+			hRatio = (offsetWidth - $(elem).find('.lb-wrap').get(0).scrollWidth - borderLeft - borderRight)/(hLbHeight - hSliderHeight);
+			
+			console.log(offsetHeight, $(elem).find('.lb-wrap').get(0).scrollHeight, vLbHeight, vSliderHeight);
+			
+			var el = $(elem);
+			el.attr('vratio', vRatio);
+			el.attr('hratio', hRatio);
 		}
 		function setSlidersHeight(elem) {
 			var el = $(elem);
@@ -93,6 +116,12 @@
 			offsetHeight = 0;
 			clientWidth = 0;
 			clientHeight = 0;
+			// vRatio = 0;
+			// hRatio = 0;
+			vSliderHeight = 0;
+			hSliderHeight = 0;
+			vLbHeight = 0;
+			hLbHeight = 0;
 		}
 		function reduceScrollbarsWidthHeight(elem) {
 			var el = $(elem);

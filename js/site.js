@@ -1,3 +1,3 @@
 (function ($, undefined) {
-	$('.box6').not('.inner-div').lionbars();
+	$('div').not('.inner-div').lionbars();
 }(jQuery));

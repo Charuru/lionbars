@@ -7,14 +7,14 @@ body {
   font-size: 62.5%; /* Causes base font size to be ~10px */
 }
 
-.box0, .box1, .box2, .box3, .box4, .box5, .box6 { float: left; display: block; width: 100px; height: 100px; overflow: auto; font: 11px/16px helvetica; margin: 50px; border: 1px solid #ccc; }
+.box0, .box1, .box2, .box3, .box4, .box5, .box6 { float: left; display: block; width: 200px; height: 200px; overflow: auto; font: 11px/16px helvetica; margin: 50px; border: 1px solid #ccc; }
 p { display: block; }
 
 .box1, .box0 { padding: 10px; }
-.box2 p { width: 600px; }
+.box2 p { width: 600px; display: block; }
 .box3 p { display: block; width: 600px; height: 600px;/* background: #555; color: #ddd;*/ }
 .box3 { padding: 20px; }
 .box4 p { width: 1500px; }
 .box5 p {  }
-.box6 { padding: 0px; }
-.inner-div { width: 50px; height: 150px; background: #eee; }
+.box6 { padding: 20px; }
+.inner-div { width: 50px; height: 3000px; background: #eee; }
