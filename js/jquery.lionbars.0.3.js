@@ -1,17 +1,15 @@
 (function( $ ) {
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
-    }
+    };
 	$.fn.lionbars = function(color, showOnMouseOver, visibleBar, visibleBg) {
 		// Initialization
 		var elements = $(this),
-			targets = new Array(),
 			id = 0,
 			vScrollWidth=0, hScrollWidth=0,
 			addHScroll=false, addVScroll=false,
-			paddingTop, paddingLeft, paddingBottom, paddingRight,
-			borderTop, borderRight, borderBottom, borderLeft,
-			i = 0;
+			paddingTop=0, paddingLeft=0, paddingBottom=0, paddingRight=0,
+			borderTop=0, borderRight=0, borderBottom=0, borderLeft=0;
 		
 		// Main Loop
 		mainLoop();
@@ -79,8 +77,8 @@
 			borderBottom = 0;
 			borderRight = 0;
 		}
-		function reduceScrollbarsWidthHeight(el) {
-			var el = $(el);
+		function reduceScrollbarsWidthHeight(elem) {
+			var el = $(elem);
 			
 			if (addVScroll && addHScroll) {
 				el.find('.lb-v-scrollbar').css({ "height" : el.height()-12 });
@@ -100,8 +98,8 @@
 				resizeInnerWrap(el, el.find('.lb-wrap'));
 			}
 		}
-		function resizeMainBox(el) {
-			var el = $(el);
+		function resizeMainBox(elem) {
+			var el = $(elem);
 			el.css({ "width" : el.width() + paddingLeft + paddingRight, "height" : el.height() + paddingTop + paddingBottom });
 		}
 		function movePadding(from, to) {
@@ -125,26 +123,29 @@
 				"height" : mainEl.height()+hScrollWidth - paddingTop - paddingBottom 
 			});
 		}
-		function setVScrollbarWidth(el) {
+		function setVScrollbarWidth(elem) {
+			var el = $(elem);
 			el.css({ "overflow" : 'auto' });
 			vScrollWidth = el.get(0).offsetWidth - el.get(0).clientWidth - borderLeft - borderRight;
 			el.css({ "overflow" : 'hidden' });
 		}
-		function setHScrollbarWidth(el) {
+		function setHScrollbarWidth(elem) {
+			var el = $(elem);
 			el.css({ "overflow" : 'auto' });
 			hScrollWidth = el.get(0).offsetHeight - el.get(0).clientHeight - borderTop - borderBottom;
 			el.css({ "overflow" : 'hidden' });
 		}
-		function wrap(el, vscroll, hscroll) {
-			var el = $(el);
+		function wrap(elem, vscroll, hscroll) {
+			var el = $(elem);
 			var elemId = el.attr('id');
-
+			var wrap = 0;
+			
 			if (elemId !== undefined) {
 				el.wrapInner('<div class="lb-wrap" id="lb-wrap-'+id+'-'+elemId+'"></div>');
-				var wrap = $('#lb-wrap-'+id+'-'+elemId);
+				wrap = $('#lb-wrap-'+id+'-'+elemId);
 			} else {
 				el.wrapInner('<div class="lb-wrap" id="lb-wrap-'+id+'"></div>');
-				var wrap = $('#lb-wrap-'+id);
+				wrap = $('#lb-wrap-'+id);
 			}
 			wrap.wrapInner('<div class="lb-content"></div>');
 			if (vscroll) {
@@ -196,8 +197,8 @@
 			
 			// console.log(paddingTop, paddingLeft, paddingBottom, paddingRight);
 		}
-		function getBorders(el) {
-			var el = $(el);
+		function getBorders(elem) {
+			var el = $(elem);
 			
 			borderTop = parseInt(el.css('border-top-width').replace('px', ''));
 			borderRight = parseInt(el.css('border-right-width').replace('px', ''));
@@ -206,7 +207,7 @@
 		}
 		
 		return this.each(function() {
-			var $this = $(this);
+			//var $this = $(this);
 		});
 	};
 })( jQuery );
