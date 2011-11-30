@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>index.html</string>
+	<string>js/jquery.lionbars.0.3.js</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -21,28 +21,14 @@
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
-		<key>css/lionbars.css</key>
+		<key>css/layout.css</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>13</integer>
+				<integer>37</integer>
 				<key>line</key>
-				<integer>0</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>index.html</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
 				<integer>19</integer>
-				<key>line</key>
-				<integer>24</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -54,37 +40,21 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>39</integer>
+				<integer>33</integer>
 				<key>line</key>
-				<integer>2</integer>
+				<integer>147</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>20</integer>
-				<key>line</key>
-				<integer>2</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>39</integer>
-				<key>line</key>
-				<integer>2</integer>
-			</dict>
 		</dict>
 		<key>js/site.js</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>7</integer>
+				<integer>9</integer>
 				<key>line</key>
 				<integer>1</integer>
 			</dict>
@@ -97,9 +67,8 @@
 	<key>openDocuments</key>
 	<array>
 		<string>js/jquery.lionbars.0.3.js</string>
-		<string>index.html</string>
-		<string>css/lionbars.css</string>
 		<string>js/site.js</string>
+		<string>css/layout.css</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>

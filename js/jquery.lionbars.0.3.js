@@ -105,7 +105,6 @@
 		function resizeInnerWrap(main, child) {
 			var mainEl = $(main);
 			var childEl = $(child);
-			console.log(mainEl.width(), hScrollWidth, paddingTop, paddingBottom);
 			mainEl.css({ "position" : 'relative' });
 			childEl.css({
 				"width" : mainEl.width()+vScrollWidth - paddingLeft - paddingRight, 
