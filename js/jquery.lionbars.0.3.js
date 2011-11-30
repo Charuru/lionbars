@@ -10,7 +10,10 @@
 			addHScroll=false, addVScroll=false,
 			paddingTop=0, paddingLeft=0, paddingBottom=0, paddingRight=0,
 			borderTop=0, borderRight=0, borderBottom=0, borderLeft=0,
-			scrollHeight=0, scrollWidth=0, offsetWidth=0, offsetHeight=0, clientWidth=0, clientHeight=0;
+			scrollHeight=0, scrollWidth=0, offsetWidth=0, offsetHeight=0, clientWidth=0, clientHeight=0,
+			vRatio=0, hRatio=0,
+			vSliderHeight=0, hSliderHeight=0,
+			vLbHeight=0, hLbHeight=0;
 		
 		// Main Loop
 		mainLoop();
@@ -29,8 +32,13 @@
 					
 					// hide the default scrollbar
 					hideScrollbars(target, addVScroll, addHScroll);
+					
+					// Calculate the size of the scrollbars
 					reduceScrollbarsWidthHeight(target);
 					setSlidersHeight(target);
+					
+					// Set variables needed to calculate scroll speed, etc.
+					setScrollRatios(target);
 					
 					// prepare for next element
 					resetVars();
@@ -39,25 +47,32 @@
 		}
 		
 		// Core functions
+		function setScrollRatios(elem) {
+			vRatio = (offsetHeight - scrollHeight - borderTop - borderBottom)/(vLbHeight - vSliderHeight);
+			hRatio = (offsetWidth - scrollWidth - borderLeft - borderRight)/(hLbHeight - hSliderHeight);
+			console.log(vRatio, hRatio);
+		}
 		function setSlidersHeight(elem) {
 			var el = $(elem);
-			var hmin, hmax, gap, height, width;
+			var hmin, hmax, gap;
 			
 			if (el.find('.lb-v-scrollbar').length != 0) {
-				hmin = 10;
+				hmin = 20;
 				gap = offsetHeight - el.find('.lb-v-scrollbar').height();
 				hmax = offsetHeight - gap - hmin;
-				height = Math.round((offsetHeight*hmax)/scrollHeight);
-			}
-			if (el.find('.lb-h-scrollbar').length != 0) {
-				hmin = 10;
-				gap = offsetWidth - el.find('.lb-h-scrollbar').width();
-				hmax = offsetWidth - gap - hmin;
-				width = Math.round((offsetWidth*hmax)/scrollWidth);
+				vSliderHeight = Math.round((offsetHeight*hmax)/scrollHeight);
+				vSliderHeight = (vSliderHeight < hmin) ? hmin : vSliderHeight;
 			}
 			
-			el.find('.lb-v-scrollbar-slider').css({ "height" : height });
-			el.find('.lb-h-scrollbar-slider').css({ "width" : width });
+			if (el.find('.lb-h-scrollbar').length != 0) {
+				hmin = 20;
+				gap = offsetWidth - el.find('.lb-h-scrollbar').width();
+				hmax = offsetWidth - gap - hmin;
+				hSliderHeight = Math.round((offsetWidth*hmax)/scrollWidth);
+				hSliderHeight = (hSliderHeight < hmin) ? hmin : hSliderHeight;
+			}
+			el.find('.lb-v-scrollbar-slider').css({ "height" : vSliderHeight });
+			el.find('.lb-h-scrollbar-slider').css({ "width" : hSliderHeight });
 		}
 		function resetVars() {
 			vScrollWidth = 0;
@@ -83,11 +98,15 @@
 			var el = $(elem);
 			
 			if (addVScroll && addHScroll) {
-				el.find('.lb-v-scrollbar').css({ "height" : el.height()-12 });
-				el.find('.lb-h-scrollbar').css({ "width" : el.width()-12 });
+				vLbHeight = el.height()-12;
+				hLbHeight = el.width()-12;
+				el.find('.lb-v-scrollbar').css({ "height" : vLbHeight });
+				el.find('.lb-h-scrollbar').css({ "width" : hLbHeight });
 			} else {
-				el.find('.lb-v-scrollbar').css({ "height" : el.height()-4 });
-				el.find('.lb-h-scrollbar').css({ "width" : el.width()-4 });
+				vLbHeight = el.height()-4;
+				hLbHeight = el.width()-4;
+				el.find('.lb-v-scrollbar').css({ "height" : vLbHeight });
+				el.find('.lb-h-scrollbar').css({ "width" : hLbHeight });
 			}
 		}
 		function hideScrollbars(elem, vscroll, hscroll) {
@@ -220,9 +239,6 @@
 			
 			setVScrollbarWidth($(elem));
 			setHScrollbarWidth($(elem));
-			
-			
-			console.log(vScrollWidth);
 		}
 		
 		return this.each(function() {
