@@ -9,7 +9,8 @@
 			vScrollWidth=0, hScrollWidth=0,
 			addHScroll=false, addVScroll=false,
 			paddingTop=0, paddingLeft=0, paddingBottom=0, paddingRight=0,
-			borderTop=0, borderRight=0, borderBottom=0, borderLeft=0;
+			borderTop=0, borderRight=0, borderBottom=0, borderLeft=0,
+			scrollHeight=0, scrollWidth=0, offsetWidth=0, offsetHeight=0, clientWidth=0, clientHeight=0;
 		
 		// Main Loop
 		mainLoop();
@@ -19,7 +20,10 @@
 				if (needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars')) {
 					// add the element to the main array
 					target = elements[i];
-							
+					
+					// get some values before the element is wrapped
+					getDimentions(target);
+					
 					// wrap the element
 					wrap(target, addVScroll, addHScroll);
 					
@@ -37,31 +41,23 @@
 		// Core functions
 		function setSlidersHeight(elem) {
 			var el = $(elem);
+			var hmin, hmax, gap, height, width;
 			
-			if (el.find('.lb-v-scrollbar')) {
-				var h1, h2, hmin, hmax, gap, height;
-				h1 = el.find('.lb-wrap').get(0).scrollHeight;
-				h2 = el.find('.lb-wrap').get(0).offsetHeight - hScrollWidth;
-				// h1 = parseInt(el.find('.lb-content').height()) + parseInt(paddingTop) + parseInt(paddingBottom);
-				// h2 = el.find('.lb-wrap').outerHeight();
+			if (el.find('.lb-v-scrollbar').length != 0) {
 				hmin = 10;
-				gap = h2 - el.find('.lb-v-scrollbar').height();
-				hmax = h2 - gap - hmin;
-				height = Math.round((h2*hmax)/h1 + hmin);
-				el.find('.lb-v-scrollbar-slider').css({ "height" : height });
-				console.log(h1, h2);
+				gap = offsetHeight - el.find('.lb-v-scrollbar').height();
+				hmax = offsetHeight - gap - hmin;
+				height = Math.round((offsetHeight*hmax)/scrollHeight);
 			}
-			if (el.find('.lb-h-scrollbar')) {
-				var h1, h2, hmin, hmax, gap, height;
-				h1 = el.find('.lb-wrap').get(0).scrollWidth;
-				h2 = el.find('.lb-wrap').get(0).offsetWidth - vScrollWidth;
+			if (el.find('.lb-h-scrollbar').length != 0) {
 				hmin = 10;
-				gap = h2 - el.find('.lb-h-scrollbar').width();
-				hmax = h2 - gap - hmin;
-				height = Math.round((h2*hmax)/h1 + hmin);
-				el.find('.lb-h-scrollbar-slider').css({ "width" : height });
-				console.log(h1, h2);
+				gap = offsetWidth - el.find('.lb-h-scrollbar').width();
+				hmax = offsetWidth - gap - hmin;
+				width = Math.round((offsetWidth*hmax)/scrollWidth);
 			}
+			
+			el.find('.lb-v-scrollbar-slider').css({ "height" : height });
+			el.find('.lb-h-scrollbar-slider').css({ "width" : width });
 		}
 		function resetVars() {
 			vScrollWidth = 0;
@@ -76,6 +72,12 @@
 			borderLeft = 0;
 			borderBottom = 0;
 			borderRight = 0;
+			scrollHeight = 0;
+			scrollWidth = 0;
+			offsetWidth = 0;
+			offsetHeight = 0;
+			clientWidth = 0;
+			clientHeight = 0;
 		}
 		function reduceScrollbarsWidthHeight(elem) {
 			var el = $(elem);
@@ -126,13 +128,13 @@
 		function setVScrollbarWidth(elem) {
 			var el = $(elem);
 			el.css({ "overflow" : 'auto' });
-			vScrollWidth = el.get(0).offsetWidth - el.get(0).clientWidth - borderLeft - borderRight;
+			vScrollWidth = offsetWidth - clientWidth - borderLeft - borderRight;
 			el.css({ "overflow" : 'hidden' });
 		}
 		function setHScrollbarWidth(elem) {
 			var el = $(elem);
 			el.css({ "overflow" : 'auto' });
-			hScrollWidth = el.get(0).offsetHeight - el.get(0).clientHeight - borderTop - borderBottom;
+			hScrollWidth = offsetHeight - clientHeight - borderTop - borderBottom;
 			el.css({ "overflow" : 'hidden' });
 		}
 		function wrap(elem, vscroll, hscroll) {
@@ -167,18 +169,19 @@
 			
 			getPadding(el);
 			getBorders(el);
+			
 			el.css({ "overflow" : 'hidden' });
 			
 			// check for vertical scrollbars
 			if (el.get(0).scrollHeight > el.get(0).clientHeight) {
 				addVScroll = true;
-				setVScrollbarWidth(el);
+				// setVScrollbarWidth(el);
 			}
 			
 			// check for horizontal scrollbars
 			if (el.get(0).scrollWidth > el.get(0).clientWidth) {
 				addHScroll = true;
-				setHScrollbarWidth(el);
+				// setHScrollbarWidth(el);
 			}
 			
 			el.css({ "overflow" : 'auto' });
@@ -204,6 +207,22 @@
 			borderRight = parseInt(el.css('border-right-width').replace('px', ''));
 			borderBottom = parseInt(el.css('border-bottom-width').replace('px', ''));
 			borderLeft = parseInt(el.css('border-left-width').replace('px', ''));
+		}
+		function getDimentions(elem) {
+			var el = $(elem).get(0);
+			
+			scrollHeight = el.scrollHeight;
+			scrollWidth = el.scrollWidth;
+			clientHeight = el.clientHeight;
+			clientWidth = el.clientWidth;
+			offsetHeight = el.offsetHeight;
+			offsetWidth = el.offsetWidth;
+			
+			setVScrollbarWidth($(elem));
+			setHScrollbarWidth($(elem));
+			
+			
+			console.log(vScrollWidth);
 		}
 		
 		return this.each(function() {
