@@ -2,10 +2,10 @@
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
     };
-	$.fn.lionbars = function(color, showOnMouseOver, visibleBar, visibleBg) {
-		// Flags
+	$.fn.lionbars = function(autohide) {
 		
-		var HScrolling=false, VScrolling=false, activeScroll=0, activeWrap=0, eventX, eventY, mouseX, mouseY, currentRatio, initPos, scrollValue;
+		// Flags
+		var timeout, HDragging=false, VDragging=false, activeScroll=0, activeWrap=0, eventX, eventY, mouseX, mouseY, currentRatio, initPos, scrollValue, hideTimeoutSet=false;
 		
 		// Initialization
 		var elements = $(this),
@@ -55,21 +55,21 @@
 		
 		// Set document events
 		$(document).mousemove(function(e) {
-			if (VScrolling) {
+			if (VDragging) {
 				mouseY = e.pageY;
 				activeWrap.scrollTop((initPos + mouseY - eventY) * Math.abs(currentRatio));
 			}
-			if (HScrolling) {
+			if (HDragging) {
 				mouseX = e.pageX;
 				activeWrap.scrollLeft((initPos + mouseX - eventX) * Math.abs(currentRatio));
 			}
 		});
 		$(document).mouseup(function(e) {
-			if (VScrolling) {
-				VScrolling = false;
+			if (VDragging) {
+				VDragging = false;
 			}
-			if (HScrolling) {
-				HScrolling = false;
+			if (HDragging) {
+				HDragging = false;
 			}
 		});
 		
@@ -77,16 +77,29 @@
 		function setEvents(elem) {
 			var el = $(elem);
 			
-			if (addVScroll) {
+			if (addVScroll || addHScroll) {
 				el.find('.lb-wrap').scroll(function(e) {
 					el.find('.lb-v-scrollbar-slider').css({ "top" : -$(this).scrollTop()/el.attr('vratio') });
+					el.find('.lb-h-scrollbar-slider').css({ "left" : -$(this).scrollLeft()/el.attr('hratio') });
+					
+					if (autohide) {
+						el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeIn(150);
+						clearTimeout(timeout);
+						timeout = setTimeout(function() {
+							el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeOut(150);
+						}, 2000);
+					}
 				});
+			}
+			
+			if (addVScroll) {
+				
 				el.find('.lb-v-scrollbar-slider').mousedown(function(e) {
 					e.preventDefault();
 				
 					eventY = e.pageY;
 				
-					VScrolling = true;
+					VDragging = true;
 					activeScroll = $(this);
 					activeWrap = el.find('.lb-wrap');
 					currentRatio = activeWrap.parent().attr('vratio');
@@ -100,15 +113,15 @@
 			}
 			
 			if (addHScroll) {
-				el.find('.lb-wrap').scroll(function(e) {
-					el.find('.lb-h-scrollbar-slider').css({ "left" : -$(this).scrollLeft()/el.attr('hratio') });
-				});
+				// el.find('.lb-wrap').scroll(function(e) {
+				// 				el.find('.lb-h-scrollbar-slider').css({ "left" : -$(this).scrollLeft()/el.attr('hratio') });
+				// 			});
 				el.find('.lb-h-scrollbar-slider').mousedown(function(e) {
 					e.preventDefault();
 					
 					eventX = e.pageX;
 					
-					HScrolling = true;
+					HDragging = true;
 					activeScroll = $(this);
 					activeWrap = el.find('.lb-wrap');
 					currentRatio = activeWrap.parent().attr('hratio');
@@ -118,6 +131,15 @@
 					if (!$(e.target).hasClass('lb-h-scrollbar-slider')) {
 						el.find('.lb-wrap').scrollLeft((e.pageX - $(this).offset().left) * Math.abs(el.attr('hratio')) - $(this).find('.lb-h-scrollbar-slider').width()/2);
 					}
+				});
+			}
+			
+			if ((addVScroll || addHScroll) && autohide) {
+				el.find('.lb-v-scrollbar, .lb-h-scrollbar').hide();
+				
+				el.hover(function() {
+				}, function() {
+					el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeOut(150);
 				});
 			}
 		}
