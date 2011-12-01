@@ -58,12 +58,10 @@
 			if (VScrolling) {
 				mouseY = e.pageY;
 				activeWrap.scrollTop((initPos + mouseY - eventY) * Math.abs(currentRatio));
-				activeScroll.css({ "top" : -activeWrap.scrollTop()/activeWrap.parent().attr('vratio') });
 			}
 			if (HScrolling) {
 				mouseX = e.pageX;
 				activeWrap.scrollLeft((initPos + mouseX - eventX) * Math.abs(currentRatio));
-				activeScroll.css({ "left" : -activeWrap.scrollLeft()/activeWrap.parent().attr('hratio') });
 			}
 		});
 		$(document).mouseup(function(e) {
@@ -81,20 +79,23 @@
 			
 			if (addVScroll) {
 				el.find('.lb-wrap').scroll(function(e) {
-					if (!VScrolling && !HScrolling) {
-						el.find('.lb-v-scrollbar-slider').css({ "top" : -$(this).scrollTop()/el.attr('vratio') });
-					}
+					el.find('.lb-v-scrollbar-slider').css({ "top" : -$(this).scrollTop()/el.attr('vratio') });
 				});
 				el.find('.lb-v-scrollbar-slider').mousedown(function(e) {
 					e.preventDefault();
-					
+				
 					eventY = e.pageY;
-					
+				
 					VScrolling = true;
 					activeScroll = $(this);
 					activeWrap = el.find('.lb-wrap');
 					currentRatio = activeWrap.parent().attr('vratio');
 					initPos = activeScroll.position().top;
+				});
+				el.find('.lb-v-scrollbar').mousedown(function(e) {
+					if (!$(e.target).hasClass('lb-v-scrollbar-slider')) {
+						el.find('.lb-wrap').scrollTop((e.pageY - $(this).offset().top) * Math.abs(el.attr('vratio')) - $(this).find('.lb-v-scrollbar-slider').height()/2);
+					}
 				});
 			}
 			
@@ -110,8 +111,13 @@
 					HScrolling = true;
 					activeScroll = $(this);
 					activeWrap = el.find('.lb-wrap');
-					currentRatio = activeWrap.parent().attr('vratio');
+					currentRatio = activeWrap.parent().attr('hratio');
 					initPos = activeScroll.position().left;
+				});
+				el.find('.lb-h-scrollbar').mousedown(function(e) {
+					if (!$(e.target).hasClass('lb-h-scrollbar-slider')) {
+						el.find('.lb-wrap').scrollLeft((e.pageX - $(this).offset().left) * Math.abs(el.attr('hratio')) - $(this).find('.lb-h-scrollbar-slider').width()/2);
+					}
 				});
 			}
 		}
