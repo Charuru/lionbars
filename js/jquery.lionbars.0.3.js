@@ -3,6 +3,10 @@
         return this.get(0).scrollHeight > this.height();
     };
 	$.fn.lionbars = function(color, showOnMouseOver, visibleBar, visibleBg) {
+		// Flags
+		
+		var HScrolling=false, VScrolling=false, activeScroll=0, activeWrap=0, eventX, eventY, mouseX, mouseY, currentRatio, initPos, scrollValue;
+		
 		// Initialization
 		var elements = $(this),
 			id = 0,
@@ -49,19 +53,65 @@
 			}
 		}
 		
+		// Set document events
+		$(document).mousemove(function(e) {
+			if (VScrolling) {
+				mouseY = e.pageY;
+				activeWrap.scrollTop((initPos + mouseY - eventY) * Math.abs(currentRatio));
+				activeScroll.css({ "top" : -activeWrap.scrollTop()/activeWrap.parent().attr('vratio') });
+			}
+			if (HScrolling) {
+				mouseX = e.pageX;
+				activeWrap.scrollLeft((initPos + mouseX - eventX) * Math.abs(currentRatio));
+				activeScroll.css({ "left" : -activeWrap.scrollLeft()/activeWrap.parent().attr('hratio') });
+			}
+		});
+		$(document).mouseup(function(e) {
+			if (VScrolling) {
+				VScrolling = false;
+			}
+			if (HScrolling) {
+				HScrolling = false;
+			}
+		});
+		
 		// Core functions
 		function setEvents(elem) {
 			var el = $(elem);
 			
 			if (addVScroll) {
 				el.find('.lb-wrap').scroll(function(e) {
-					el.find('.lb-v-scrollbar-slider').css({ "top" : -$(this).scrollTop()/el.attr('vratio') });
+					if (!VScrolling && !HScrolling) {
+						el.find('.lb-v-scrollbar-slider').css({ "top" : -$(this).scrollTop()/el.attr('vratio') });
+					}
+				});
+				el.find('.lb-v-scrollbar-slider').mousedown(function(e) {
+					e.preventDefault();
+					
+					eventY = e.pageY;
+					
+					VScrolling = true;
+					activeScroll = $(this);
+					activeWrap = el.find('.lb-wrap');
+					currentRatio = activeWrap.parent().attr('vratio');
+					initPos = activeScroll.position().top;
 				});
 			}
 			
 			if (addHScroll) {
 				el.find('.lb-wrap').scroll(function(e) {
 					el.find('.lb-h-scrollbar-slider').css({ "left" : -$(this).scrollLeft()/el.attr('hratio') });
+				});
+				el.find('.lb-h-scrollbar-slider').mousedown(function(e) {
+					e.preventDefault();
+					
+					eventX = e.pageX;
+					
+					HScrolling = true;
+					activeScroll = $(this);
+					activeWrap = el.find('.lb-wrap');
+					currentRatio = activeWrap.parent().attr('vratio');
+					initPos = activeScroll.position().left;
 				});
 			}
 		}
