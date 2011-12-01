@@ -94,8 +94,6 @@
 			
 			if (addVScroll) {
 				el.find('.lb-v-scrollbar-slider').mousedown(function(e) {
-					e.preventDefault();
-				
 					eventY = e.pageY;
 				
 					VDragging = true;
@@ -103,19 +101,18 @@
 					activeWrap = el.find('.lb-wrap');
 					currentRatio = activeWrap.parent().attr('vratio');
 					initPos = activeScroll.position().top;
+					return false;
 				});
 				el.find('.lb-v-scrollbar').mousedown(function(e) {
-					e.preventDefault();
 					if (!$(e.target).hasClass('lb-v-scrollbar-slider')) {
 						el.find('.lb-wrap').scrollTop((e.pageY - $(this).offset().top) * Math.abs(el.attr('vratio')) - $(this).find('.lb-v-scrollbar-slider').height()/2);
 					}
+					return false;					
 				});
 			}
 			
 			if (addHScroll) {
-				el.find('.lb-h-scrollbar-slider').mousedown(function(e) {
-					e.preventDefault();
-					
+				el.find('.lb-h-scrollbar-slider').mousedown(function(e) {					
 					eventX = e.pageX;
 					
 					HDragging = true;
@@ -123,12 +120,13 @@
 					activeWrap = el.find('.lb-wrap');
 					currentRatio = activeWrap.parent().attr('hratio');
 					initPos = activeScroll.position().left;
+					return false;					
 				});
 				el.find('.lb-h-scrollbar').mousedown(function(e) {
-					e.preventDefault();
 					if (!$(e.target).hasClass('lb-h-scrollbar-slider')) {
 						el.find('.lb-wrap').scrollLeft((e.pageX - $(this).offset().left) * Math.abs(el.attr('hratio')) - $(this).find('.lb-h-scrollbar-slider').width()/2);
 					}
+					return false;					
 				});
 			}
 			
