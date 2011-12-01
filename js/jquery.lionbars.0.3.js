@@ -69,8 +69,6 @@
 			vRatio = (offsetHeight - $(elem).find('.lb-wrap').get(0).scrollHeight - borderTop - borderBottom)/(vLbHeight - vSliderHeight);
 			hRatio = (offsetWidth - $(elem).find('.lb-wrap').get(0).scrollWidth - borderLeft - borderRight)/(hLbHeight - hSliderHeight);
 			
-			console.log(offsetHeight, $(elem).find('.lb-wrap').get(0).scrollHeight, vLbHeight, vSliderHeight);
-			
 			var el = $(elem);
 			el.attr('vratio', vRatio);
 			el.attr('hratio', hRatio);
@@ -245,8 +243,6 @@
 			paddingLeft = parseInt(el.css('padding-left').replace('px', ''));
 			paddingBottom = parseInt(el.css('padding-bottom').replace('px', ''));
 			paddingRight = parseInt(el.css('padding-right').replace('px', ''));
-			
-			// console.log(paddingTop, paddingLeft, paddingBottom, paddingRight);
 		}
 		function getBorders(elem) {
 			var el = $(elem);
