@@ -2,10 +2,26 @@
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
     };
-	$.fn.lionbars = function(autohide) {
+	$.fn.lionbars = function(options) {
+		options = options || {};
+		autohide = options.autohide;
 		
 		// Flags
-		var timeout, HDragging=false, VDragging=false, activeScroll=0, activeWrap=0, eventX, eventY, mouseX, mouseY, currentRatio, initPos, scrollValue, hideTimeoutSet=false;
+		var timeout,
+			HDragging=false,
+			VDragging=false,
+			activeScroll=0,
+			activeWrap=0,
+			eventX,
+			eventY,
+			mouseX,
+			mouseY,
+			currentRatio,
+			initPos,
+			scrollValue,
+			hideTimeoutSet=false,
+			vEventFired = false,
+			hEventFired = false;
 		
 		// Initialization
 		var elements = $(this),
@@ -81,6 +97,22 @@
 				el.find('.lb-wrap').scroll(function(e) {
 					el.find('.lb-v-scrollbar-slider').css({ "top" : -$(this).scrollTop()/el.attr('vratio') });
 					el.find('.lb-h-scrollbar-slider').css({ "left" : -$(this).scrollLeft()/el.attr('hratio') });
+					
+					if (el.find('.lb-v-scrollbar').height() == (parseInt(el.find('.lb-v-scrollbar-slider').css('top')) + el.find('.lb-v-scrollbar-slider').height())
+						&& typeof(options.reachedBottom) == 'function'
+						&& !vEventFired
+					) {
+						vEventFired = true;
+						options.reachedBottom.apply($(this).children('.lb-content'));
+					}
+					
+					if (el.find('.lb-h-scrollbar').width() == (parseInt(el.find('.lb-h-scrollbar-slider').css('left')) + el.find('.lb-h-scrollbar-slider').width())
+						&& typeof(options.reachedRight) == 'function'
+						&& !hEventFired
+					) {
+						hEventFired = true;
+						options.reachedRight.apply($(this).children('.lb-content'));
+					}
 					
 					if (autohide) {
 						el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeIn(150);

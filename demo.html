@@ -84,7 +84,16 @@
 	<script src="js/lib/jquery-1.6.4.min.js"></script>
 	<script src="js/jquery.lionbars.0.3.js"></script>
 	<script>
-		$('.box').lionbars();
+		$('.box').lionbars({
+			reachedBottom: function () {
+				console.log('YES BOTTOM');
+				console.log(this);
+				$(this).append('<div>asdasdasdasdasdasd</div>');
+			},
+			reachedRight: function () {
+                console.log('YES RIGHT');
+            }
+		});
 	</script>
 </body>
 </html>
