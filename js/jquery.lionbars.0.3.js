@@ -120,6 +120,8 @@
 							
 							// prepare for next element
 							resetVars();
+							
+							vEventFired = false;
 						}]);
 					}
 					
@@ -145,6 +147,8 @@
 							
 							// prepare for next element
 							resetVars();
+							
+							hEventFired = false;
 						}]);
 					}
 					
