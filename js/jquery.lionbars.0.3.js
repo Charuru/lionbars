@@ -206,8 +206,6 @@
 			}
 		}
 		function setScrollRatios(elem) {
-			console.log((offsetHeight - $(elem).find('.lb-wrap').get(0).scrollHeight - borderTop - borderBottom) + ' / ' + (vLbHeight - vSliderHeight));
-			
 			vRatio = (offsetHeight - $(elem).find('.lb-wrap').get(0).scrollHeight - borderTop - borderBottom)/(vLbHeight - vSliderHeight);
 			hRatio = (offsetWidth - $(elem).find('.lb-wrap').get(0).scrollWidth - borderLeft - borderRight)/(hLbHeight - hSliderHeight);
 			
@@ -220,8 +218,6 @@
 			var hmin, hmax, gap;
 			
 			if (el.find('.lb-v-scrollbar').length != 0) {
-				console.log(offsetHeight);
-				
 				hmin = 20;
 				gap = offsetHeight - el.find('.lb-v-scrollbar').height();
 				hmax = offsetHeight - gap - hmin;
