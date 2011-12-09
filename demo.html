@@ -87,8 +87,6 @@
 		$('.box').lionbars({
 			autohide: false,
 			reachedBottom: function (callback) {
-				console.log('YES BOTTOM');
-				console.log(this);
 				$(this).append('<div>asdasdasdasdasdasd</div>');
 				$(this).append('<div>asdasdasdasdasdasd</div>');
 				$(this).append('<div>asdasdasdasdasdasd</div>');
@@ -101,7 +99,6 @@
 				callback.call();
 			},
 			reachedRight: function (callback) {
-                console.log('YES RIGHT');
                 callback.call();
             }
 		});
