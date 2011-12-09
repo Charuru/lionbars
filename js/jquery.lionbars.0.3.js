@@ -128,11 +128,23 @@
 						&& !hEventFired
 					) {
 						hEventFired = true;
+						var self = $(this);
+						
 						options.reachedRight.apply($(this).children('.lb-content'), [function () {
-							console.log('Recalculate');
+							getDimentions($(self).parent(), {
+								height: $(self).children('.lb-content').get(0).scrollHeight,
+								width: $(self).children('.lb-content').get(0).scrollWidth
+							});
+							
 							// Calculate the size of the scrollbars
-							reduceScrollbarsWidthHeight(target);
-							setSlidersHeight(target);
+							reduceScrollbarsWidthHeight($(self).parent());
+							setSlidersHeight($(self).parent());
+							
+							// Set variables needed to calculate scroll speed, etc.
+							setScrollRatios($(self).parent());
+							
+							// prepare for next element
+							resetVars();
 						}]);
 					}
 					
