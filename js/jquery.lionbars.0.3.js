@@ -103,7 +103,26 @@
 						&& !vEventFired
 					) {
 						vEventFired = true;
-						options.reachedBottom.apply($(this).children('.lb-content'));
+						var self = $(this);
+						
+						options.reachedBottom.apply($(this).children('.lb-content'), [function () {
+							getDimentions($(self).parent(), {
+								height: $(self).children('.lb-content').get(0).scrollHeight,
+								width: $(self).children('.lb-content').get(0).scrollWidth
+							});
+							
+							// Calculate the size of the scrollbars
+							reduceScrollbarsWidthHeight($(self).parent());
+							setSlidersHeight($(self).parent());
+							
+							// Set variables needed to calculate scroll speed, etc.
+							setScrollRatios($(self).parent());
+							
+							// prepare for next element
+							resetVars();
+							
+							vEventFired = false;
+						}]);
 					}
 					
 					if (el.find('.lb-h-scrollbar').width() == (parseInt(el.find('.lb-h-scrollbar-slider').css('left')) + el.find('.lb-h-scrollbar-slider').width())
@@ -111,7 +130,26 @@
 						&& !hEventFired
 					) {
 						hEventFired = true;
-						options.reachedRight.apply($(this).children('.lb-content'));
+						var self = $(this);
+						
+						options.reachedRight.apply($(this).children('.lb-content'), [function () {
+							getDimentions($(self).parent(), {
+								height: $(self).children('.lb-content').get(0).scrollHeight,
+								width: $(self).children('.lb-content').get(0).scrollWidth
+							});
+							
+							// Calculate the size of the scrollbars
+							reduceScrollbarsWidthHeight($(self).parent());
+							setSlidersHeight($(self).parent());
+							
+							// Set variables needed to calculate scroll speed, etc.
+							setScrollRatios($(self).parent());
+							
+							// prepare for next element
+							resetVars();
+							
+							hEventFired = false;
+						}]);
 					}
 					
 					if (autohide) {
@@ -139,12 +177,12 @@
 					if (!$(e.target).hasClass('lb-v-scrollbar-slider')) {
 						el.find('.lb-wrap').scrollTop((e.pageY - $(this).offset().top) * Math.abs(el.attr('vratio')) - $(this).find('.lb-v-scrollbar-slider').height()/2);
 					}
-					return false;					
+					return false;
 				});
 			}
 			
 			if (addHScroll) {
-				el.find('.lb-h-scrollbar-slider').mousedown(function(e) {					
+				el.find('.lb-h-scrollbar-slider').mousedown(function(e) {
 					eventX = e.pageX;
 					
 					HDragging = true;
@@ -158,7 +196,7 @@
 					if (!$(e.target).hasClass('lb-h-scrollbar-slider')) {
 						el.find('.lb-wrap').scrollLeft((e.pageX - $(this).offset().left) * Math.abs(el.attr('hratio')) - $(this).find('.lb-h-scrollbar-slider').width()/2);
 					}
-					return false;					
+					return false;
 				});
 			}
 			
@@ -358,11 +396,11 @@
 			borderBottom = parseInt(el.css('border-bottom-width').replace('px', ''));
 			borderLeft = parseInt(el.css('border-left-width').replace('px', ''));
 		}
-		function getDimentions(elem) {
+		function getDimentions(elem, scroll) {
 			var el = $(elem).get(0);
 			
-			scrollHeight = el.scrollHeight;
-			scrollWidth = el.scrollWidth;
+			scrollHeight = (typeof(scroll) != 'undefined') ? scroll.height : el.scrollHeight;
+			scrollWidth = (typeof(scroll) != 'undefined') ? scroll.width : el.scrollWidth;
 			clientHeight = el.clientHeight;
 			clientWidth = el.clientWidth;
 			offsetHeight = el.offsetHeight;

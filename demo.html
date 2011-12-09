@@ -85,13 +85,21 @@
 	<script src="js/jquery.lionbars.0.3.js"></script>
 	<script>
 		$('.box').lionbars({
-			reachedBottom: function () {
-				console.log('YES BOTTOM');
-				console.log(this);
+			autohide: false,
+			reachedBottom: function (callback) {
 				$(this).append('<div>asdasdasdasdasdasd</div>');
+				$(this).append('<div>asdasdasdasdasdasd</div>');
+				$(this).append('<div>asdasdasdasdasdasd</div>');
+				$(this).append('<div>asdasdasdasdasdasd</div>');
+				$(this).append('<div>asdasdasdasdasdasd</div>');
+				$(this).append('<div>asdasdasdasdasdasd</div>');
+				$(this).append('<div>asdasdasdasdasdasd</div>');
+				$(this).append('<div>asdasdasdasdasdasd</div>');
+				
+				callback.call();
 			},
-			reachedRight: function () {
-                console.log('YES RIGHT');
+			reachedRight: function (callback) {
+                callback.call();
             }
 		});
 	</script>
