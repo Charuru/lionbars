@@ -84,24 +84,26 @@
 	<script src="js/lib/jquery-1.6.4.min.js"></script>
 	<script src="js/jquery.lionbars.0.3.js"></script>
 	<script>
-		$('.box').lionbars({
-			autohide: false,
-			reachedBottom: function (callback) {
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				
-				callback.call();
-			},
-			reachedRight: function (callback) {
-                callback.call();
-            }
-		});
+		// $('.box').lionbars({
+		// 			autohide: false,
+		// 			reachedBottom: function (callback) {
+		// 				$(this).append('<div>asdasdasdasdasdasd</div>');
+		// 				$(this).append('<div>asdasdasdasdasdasd</div>');
+		// 				$(this).append('<div>asdasdasdasdasdasd</div>');
+		// 				$(this).append('<div>asdasdasdasdasdasd</div>');
+		// 				$(this).append('<div>asdasdasdasdasdasd</div>');
+		// 				$(this).append('<div>asdasdasdasdasdasd</div>');
+		// 				$(this).append('<div>asdasdasdasdasdasd</div>');
+		// 				$(this).append('<div>asdasdasdasdasdasd</div>');
+		// 				
+		// 				callback.call();
+		// 			},
+		// 			reachedRight: function (callback) {
+		//                 callback.call();
+		//             }
+		// 		});
+		
+		$('.box').lionbars();
 	</script>
 </body>
 </html>
