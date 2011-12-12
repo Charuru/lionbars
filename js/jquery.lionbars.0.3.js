@@ -105,7 +105,8 @@
 						vEventFired = true;
 						var self = $(this);
 						
-						options.reachedBottom.apply($(this).children('.lb-content'), [function () {
+						// TODO: make this work for ie8 and opera
+						$(this).children('.lb-content').bind('DOMSubtreeModified', function () {
 							getDimentions($(self).parent(), {
 								height: $(self).children('.lb-content').get(0).scrollHeight,
 								width: $(self).children('.lb-content').get(0).scrollWidth
@@ -122,7 +123,10 @@
 							resetVars();
 							
 							vEventFired = false;
-						}]);
+							$(self).children('.lb-content').unbind('DOMSubtreeModified');
+						});
+						
+						options.reachedBottom.apply($(this).children('.lb-content'));
 					}
 					
 					if (el.find('.lb-h-scrollbar').width() == (parseInt(el.find('.lb-h-scrollbar-slider').css('left')) + el.find('.lb-h-scrollbar-slider').width())
@@ -132,7 +136,8 @@
 						hEventFired = true;
 						var self = $(this);
 						
-						options.reachedRight.apply($(this).children('.lb-content'), [function () {
+						// TODO: make this work for ie8 and opera
+						$(this).children('.lb-content').bind('DOMSubtreeModified', function () {
 							getDimentions($(self).parent(), {
 								height: $(self).children('.lb-content').get(0).scrollHeight,
 								width: $(self).children('.lb-content').get(0).scrollWidth
@@ -148,8 +153,11 @@
 							// prepare for next element
 							resetVars();
 							
-							hEventFired = false;
-						}]);
+							vEventFired = false;
+							$(self).children('.lb-content').unbind('DOMSubtreeModified');
+						});
+						
+						options.reachedRight.apply($(this).children('.lb-content'));
 					}
 					
 					if (autohide) {
