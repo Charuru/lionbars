@@ -65,4 +65,6 @@ If you wish to contribute, make sure you contact me at me@nikolaydyankov.com
 
 Developers
 <a href="http://www.nikolaydyankov.com">Nikolay Dyankov</a>
-<a href="http://github.com/kersten">Kersten Burkhardt</a>
+
+Thanks to
+<a href="http://github.com/kersten">Kersten Burkhardt</a> For implementing endless scroll
