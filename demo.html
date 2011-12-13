@@ -85,7 +85,7 @@
 	<script src="js/jquery.lionbars.0.3.js"></script>
 	<script>
 		$('.box').lionbars({
-			autohide: false,
+			autohide: true,
 			reachedBottom: function (callback) {
 				var children = $(this).children().clone();
 				$(this).append(children);

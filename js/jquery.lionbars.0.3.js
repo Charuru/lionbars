@@ -211,7 +211,8 @@
 			if ((addVScroll || addHScroll) && autohide) {
 				el.find('.lb-v-scrollbar, .lb-h-scrollbar').hide();
 				
-				el.hover(function() {
+				el.find('.lb-v, .lb-h').hover(function() {
+					el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeIn(150);
 				}, function() {
 					el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeOut(150);
 				});
@@ -349,11 +350,11 @@
 			}
 			wrap.wrapInner('<div class="lb-content"></div>');
 			if (vscroll) {
-				el.prepend('<div class="lb-v-scrollbar"></div>');
+				el.prepend('<div class="lb-v"><div class="lb-v-scrollbar"></div></div>');
 				el.find('.lb-v-scrollbar').append('<div class="lb-v-scrollbar-slider"></div>');
 			}
 			if (hscroll) {
-				el.prepend('<div class="lb-h-scrollbar"></div>');
+				el.prepend('<div class="lb-h"><div class="lb-h-scrollbar"></div></div>');
 				el.find('.lb-h-scrollbar').append('<div class="lb-h-scrollbar-slider"></div>');
 			}
 
