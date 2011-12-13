@@ -63,8 +63,8 @@ Thank you for your interest LionBars!
 
 If you wish to contribute, make sure you contact me at me@nikolaydyankov.com
 
-Developers
+#### Developers
 <a href="http://www.nikolaydyankov.com">Nikolay Dyankov</a>
 
-Thanks to
+#### Thanks to
 <a href="http://github.com/kersten">Kersten Burkhardt</a> For implementing endless scroll
