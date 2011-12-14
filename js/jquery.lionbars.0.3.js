@@ -284,13 +284,13 @@
 			if (addVScroll && addHScroll) {
 				vLbHeight = el.height()-12;
 				hLbHeight = el.width()-12;
-				el.find('.lb-v-scrollbar').css({ "height" : vLbHeight });
-				el.find('.lb-h-scrollbar').css({ "width" : hLbHeight });
+				el.find('.lb-v').css({ "height" : vLbHeight });
+				el.find('.lb-h').css({ "width" : hLbHeight });
 			} else {
 				vLbHeight = el.height()-4;
 				hLbHeight = el.width()-4;
-				el.find('.lb-v-scrollbar').css({ "height" : vLbHeight });
-				el.find('.lb-h-scrollbar').css({ "width" : hLbHeight });
+				el.find('.lb-v').css({ "height" : vLbHeight });
+				el.find('.lb-h').css({ "width" : hLbHeight });
 			}
 		}
 		function hideScrollbars(elem, vscroll, hscroll) {
