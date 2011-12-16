@@ -281,7 +281,8 @@
 		function reduceScrollbarsWidthHeight(elem) {
 			var el = $(elem);
 			
-			if (addVScroll && addHScroll) {
+			// changed to look for the actual HTML of the scrollbar instead of the variable, telling if there is a scrollbar or not.
+			if (el.find('.lb-v').length != 0 && el.find('.lb-h').length != 0) {
 				vLbHeight = el.height()-12;
 				hLbHeight = el.width()-12;
 				el.find('.lb-v').css({ "height" : vLbHeight });
