@@ -90,28 +90,6 @@
 		});
 		
 		// Core functions
-		function refresh(elem) {
-			var el = $(elem);
-			refreshDimentions(el);
-			reduceScrollbarsWidthHeight(el);
-			setSlidersHeight(el);
-			setScrollRatios(el);
-			resetVars();
-		}
-		function refreshDimentions(elem) {
-			var el = $(elem).get(0);
-			var wrap = $(elem).find('.lb-wrap').get(0);
-			
-			scrollHeight = wrap.scrollHeight;
-			scrollWidth = wrap.scrollWidth;
-			clientHeight = el.clientHeight;
-			clientWidth = el.clientWidth;
-			offsetHeight = el.offsetHeight;
-			offsetWidth = el.offsetWidth;
-			
-			setVScrollbarWidth($(elem));
-			setHScrollbarWidth($(elem));
-		}
 		function setEvents(elem) {
 			var el = $(elem);
 			
@@ -130,25 +108,6 @@
 						// TODO: make this work for ie8 and opera
 						$(this).children('.lb-content').bind('DOMSubtreeModified', function () {
 							refresh($(self).parent());
-/*							getDimentions($(self).parent(), {
-								height: $(self).children('.lb-content').get(0).scrollHeight,
-								width: $(self).children('.lb-content').get(0).scrollWidth
-							});
-							
-							// Calculate the size of the scrollbars
-							getDimentions($(self).parent(), {
-								height: $(self).children('.lb-content').get(0).scrollHeight,
-								width: $(self).children('.lb-content').get(0).scrollWidth
-							});
-							reduceScrollbarsWidthHeight($(self).parent());
-							setSlidersHeight($(self).parent());
-							
-							// Set variables needed to calculate scroll speed, etc.
-							setScrollRatios($(self).parent());
-							
-							// prepare for next element
-							resetVars();
-							*/
 							vEventFired = false;
 							$(self).children('.lb-content').unbind('DOMSubtreeModified');
 						});
@@ -248,6 +207,28 @@
 					}, 2000);
 				});
 			}
+		}
+		function refresh(elem) {
+			var el = $(elem);
+			refreshDimentions(el);
+			reduceScrollbarsWidthHeight(el);
+			setSlidersHeight(el);
+			setScrollRatios(el);
+			resetVars();
+		}
+		function refreshDimentions(elem) {
+			var el = $(elem).get(0);
+			var wrap = $(elem).find('.lb-wrap').get(0);
+			
+			scrollHeight = wrap.scrollHeight;
+			scrollWidth = wrap.scrollWidth;
+			clientHeight = el.clientHeight;
+			clientWidth = el.clientWidth;
+			offsetHeight = el.offsetHeight;
+			offsetWidth = el.offsetWidth;
+			
+			setVScrollbarWidth($(elem));
+			setHScrollbarWidth($(elem));
 		}
 		function setScrollRatios(elem) {
 			vRatio = (offsetHeight - $(elem).find('.lb-wrap').get(0).scrollHeight - borderTop - borderBottom)/(vLbHeight - vSliderHeight);
