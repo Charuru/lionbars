@@ -90,6 +90,28 @@
 		});
 		
 		// Core functions
+		function refresh(elem) {
+			var el = $(elem);
+			refreshDimentions(el);
+			reduceScrollbarsWidthHeight(el);
+			setSlidersHeight(el);
+			setScrollRatios(el);
+			resetVars();
+		}
+		function refreshDimentions(elem) {
+			var el = $(elem).get(0);
+			var wrap = $(elem).find('.lb-wrap').get(0);
+			
+			scrollHeight = wrap.scrollHeight;
+			scrollWidth = wrap.scrollWidth;
+			clientHeight = el.clientHeight;
+			clientWidth = el.clientWidth;
+			offsetHeight = el.offsetHeight;
+			offsetWidth = el.offsetWidth;
+			
+			setVScrollbarWidth($(elem));
+			setHScrollbarWidth($(elem));
+		}
 		function setEvents(elem) {
 			var el = $(elem);
 			
@@ -107,12 +129,17 @@
 						
 						// TODO: make this work for ie8 and opera
 						$(this).children('.lb-content').bind('DOMSubtreeModified', function () {
-							getDimentions($(self).parent(), {
+							refresh($(self).parent());
+/*							getDimentions($(self).parent(), {
 								height: $(self).children('.lb-content').get(0).scrollHeight,
 								width: $(self).children('.lb-content').get(0).scrollWidth
 							});
 							
 							// Calculate the size of the scrollbars
+							getDimentions($(self).parent(), {
+								height: $(self).children('.lb-content').get(0).scrollHeight,
+								width: $(self).children('.lb-content').get(0).scrollWidth
+							});
 							reduceScrollbarsWidthHeight($(self).parent());
 							setSlidersHeight($(self).parent());
 							
@@ -121,7 +148,7 @@
 							
 							// prepare for next element
 							resetVars();
-							
+							*/
 							vEventFired = false;
 							$(self).children('.lb-content').unbind('DOMSubtreeModified');
 						});
@@ -234,20 +261,24 @@
 			var el = $(elem);
 			var hmin, hmax, gap;
 			
-			if (el.find('.lb-v-scrollbar').length != 0) {
+			if (el.find('.lb-v').length != 0) {
 				hmin = 20;
 				gap = offsetHeight - el.find('.lb-v-scrollbar').height();
 				hmax = offsetHeight - gap - hmin;
 				vSliderHeight = Math.round((offsetHeight*hmax)/scrollHeight);
 				vSliderHeight = (vSliderHeight < hmin) ? hmin : vSliderHeight;
+				vSliderHeight = (vSliderHeight > hmax) ? hmax : vSliderHeight;
 			}
 			
-			if (el.find('.lb-h-scrollbar').length != 0) {
+			if (el.find('.lb-h').length != 0) {
 				hmin = 20;
 				gap = offsetWidth - el.find('.lb-h-scrollbar').width();
 				hmax = offsetWidth - gap - hmin;
 				hSliderHeight = Math.round((offsetWidth*hmax)/scrollWidth);
 				hSliderHeight = (hSliderHeight < hmin) ? hmin : hSliderHeight;
+				hSliderHeight = (hSliderHeight > hmax) ? hmax : hSliderHeight;
+				
+				console.log(offsetWidth, scrollWidth);
 			}
 			el.find('.lb-v-scrollbar-slider').css({ "height" : vSliderHeight });
 			el.find('.lb-h-scrollbar-slider').css({ "width" : hSliderHeight });
