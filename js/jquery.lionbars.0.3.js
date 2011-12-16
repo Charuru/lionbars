@@ -124,6 +124,10 @@
 						
 						// TODO: make this work for ie8 and opera
 						$(this).children('.lb-content').bind('DOMSubtreeModified', function () {
+							// Nikolay: I'm still struggling to understand that reachedBottom thing. 
+							// The commented code below was duplicated and since the original code is obsolete, I'm commenting this as well.
+							
+							/*
 							getDimentions($(self).parent(), {
 								height: $(self).children('.lb-content').get(0).scrollHeight,
 								width: $(self).children('.lb-content').get(0).scrollWidth
@@ -138,7 +142,9 @@
 							
 							// prepare for next element
 							resetVars();
+							*/
 							
+							refresh($(self).parent());
 							vEventFired = false;
 							$(self).children('.lb-content').unbind('DOMSubtreeModified');
 						});
