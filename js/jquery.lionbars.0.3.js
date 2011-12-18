@@ -40,9 +40,24 @@
 		
 		function mainLoop() {
 			for (var i=0; elements[i] !== undefined; i++) {
-				if (needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars')) {
+				if (needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars') && !hasScrollbars(elements[i])) {
 					// add the element to the main array
 					target = elements[i];
+					
+					// if the has scrollbars, remove them
+					// HASSCROLLBARS() NOT WORKING PROPERLY when you change the content of the div before calling lionbars() on it.
+					if (hasScrollbars(elements[i])) {
+						var lbWrap = $(target).find('.lb-wrap');
+						
+						getPadding(lbWrap);
+						movePadding(lbWrap, target);
+						unwrap(target);
+						unResizeMainBox(target);
+						
+						resetVars();
+						// delete me
+						return false;
+					}
 					
 					// get some values before the element is wrapped
 					getDimentions(target);
@@ -233,8 +248,9 @@
 			offsetHeight = el.offsetHeight;
 			offsetWidth = el.offsetWidth;
 			
-			setVScrollbarWidth($(elem));
-			setHScrollbarWidth($(elem));
+			// those seem kinda not necessary
+			//setVScrollWidth($(elem));
+			//ssetHScrollWidth($(elem));
 		}
 		function setScrollRatios(elem) {
 			vRatio = (offsetHeight - $(elem).find('.lb-wrap').get(0).scrollHeight - borderTop - borderBottom)/(vLbHeight - vSliderHeight);
@@ -264,8 +280,6 @@
 				hSliderHeight = Math.round((offsetWidth*hmax)/scrollWidth);
 				hSliderHeight = (hSliderHeight < hmin) ? hmin : hSliderHeight;
 				hSliderHeight = (hSliderHeight > hmax) ? hmax : hSliderHeight;
-				
-				console.log(offsetWidth, scrollWidth);
 			}
 			el.find('.lb-v-scrollbar-slider').css({ "height" : vSliderHeight });
 			el.find('.lb-h-scrollbar-slider').css({ "width" : hSliderHeight });
@@ -326,9 +340,15 @@
 			var el = $(elem);
 			el.css({ "width" : el.width() + paddingLeft + paddingRight, "height" : el.height() + paddingTop + paddingBottom });
 		}
+		function unResizeMainBox(elem) {
+			console.log('unresize');
+			$(elem).removeAttr('style').removeAttr('vratio').removeAttr('hratio');
+		}
 		function movePadding(from, to) {
 			var fromEl = $(from);
 			var toEl = $(to);
+			
+			console.log(fromEl, toEl);
 			
 			fromEl.css({ "padding" : 0 });
 			toEl.css({
@@ -347,17 +367,24 @@
 				"height" : mainEl.height()+hScrollWidth - paddingTop - paddingBottom 
 			});
 		}
-		function setVScrollbarWidth(elem) {
+		function setVScrollWidth(elem) {
 			var el = $(elem);
 			el.css({ "overflow" : 'auto' });
 			vScrollWidth = offsetWidth - clientWidth - borderLeft - borderRight;
 			el.css({ "overflow" : 'hidden' });
 		}
-		function setHScrollbarWidth(elem) {
+		function setHScrollWidth(elem) {
 			var el = $(elem);
 			el.css({ "overflow" : 'auto' });
 			hScrollWidth = offsetHeight - clientHeight - borderTop - borderBottom;
 			el.css({ "overflow" : 'hidden' });
+		}
+		function unwrap (elem) {
+			var el = $(elem);
+			
+			el.find('.lb-v').remove();
+			el.find('.lb-h').remove();
+			el.find('.lb-content').unwrap().children().first().unwrap();
 		}
 		function wrap(elem, vscroll, hscroll) {
 			var el = $(elem);
@@ -397,13 +424,13 @@
 			// check for vertical scrollbars
 			if (el.get(0).scrollHeight > el.get(0).clientHeight) {
 				addVScroll = true;
-				// setVScrollbarWidth(el);
+				// setVScrollWidth(el);
 			}
 			
 			// check for horizontal scrollbars
 			if (el.get(0).scrollWidth > el.get(0).clientWidth) {
 				addHScroll = true;
-				// setHScrollbarWidth(el);
+				// setHScrollWidth(el);
 			}
 			
 			el.css({ "overflow" : 'auto' });
@@ -411,6 +438,13 @@
 			if (addVScroll || addHScroll) {
  				return true;
  			}			
+		}
+		function hasScrollbars(elem) {
+			if ($(elem).find('.lb-wrap').length == 0) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 		function getPadding(elem) {
 			var el = $(elem);
@@ -438,8 +472,8 @@
 			offsetHeight = el.offsetHeight;
 			offsetWidth = el.offsetWidth;
 			
-			setVScrollbarWidth($(elem));
-			setHScrollbarWidth($(elem));
+			setVScrollWidth($(elem));
+			setHScrollWidth($(elem));
 		}
 		
 		return this.each(function() {
