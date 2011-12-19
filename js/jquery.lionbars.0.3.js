@@ -33,31 +33,28 @@
 			scrollHeight=0, scrollWidth=0, offsetWidth=0, offsetHeight=0, clientWidth=0, clientHeight=0,
 			vRatio=0, hRatio=0,
 			vSliderHeight=0, hSliderHeight=0,
-			vLbHeight=0, hLbHeight=0;
+			vLbHeight=0, hLbHeight=0,
+			lbWrap=0;
 		
 		// Main Loop
 		mainLoop();
 		
 		function mainLoop() {
 			for (var i=0; elements[i] !== undefined; i++) {
-				if (needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars') && !hasScrollbars(elements[i])) {
+				target = elements[i];
+				lbWrap = $(target).find('.lb-wrap');
+				clearElemStyles(target);
+				if (hasScrollbars(elements[i])) {
+					console.log('has scrollbars, removing');
+					getPadding(lbWrap);
+					movePadding(lbWrap, target);
+					unwrap(target);					
+				}
+				resetVars();
+				
+				if (needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars')) {
+					console.log('need scrollbars');
 					// add the element to the main array
-					target = elements[i];
-					
-					// if the has scrollbars, remove them
-					// HASSCROLLBARS() NOT WORKING PROPERLY when you change the content of the div before calling lionbars() on it.
-					if (hasScrollbars(elements[i])) {
-						var lbWrap = $(target).find('.lb-wrap');
-						
-						getPadding(lbWrap);
-						movePadding(lbWrap, target);
-						unwrap(target);
-						unResizeMainBox(target);
-						
-						resetVars();
-						// delete me
-						return false;
-					}
 					
 					// get some values before the element is wrapped
 					getDimentions(target);
@@ -340,15 +337,12 @@
 			var el = $(elem);
 			el.css({ "width" : el.width() + paddingLeft + paddingRight, "height" : el.height() + paddingTop + paddingBottom });
 		}
-		function unResizeMainBox(elem) {
-			console.log('unresize');
+		function clearElemStyles(elem) {
 			$(elem).removeAttr('style').removeAttr('vratio').removeAttr('hratio');
 		}
 		function movePadding(from, to) {
 			var fromEl = $(from);
 			var toEl = $(to);
-			
-			console.log(fromEl, toEl);
 			
 			fromEl.css({ "padding" : 0 });
 			toEl.css({
