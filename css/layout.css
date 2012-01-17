@@ -13,8 +13,8 @@ p { display: block; }
 .box1, .box0 { padding: 10px; }
 .box2 p { width: 600px; display: block; }
 .box3 p { display: block; width: 600px; height: 600px;/* background: #555; color: #ddd;*/ }
-.box3 { padding: 20px; }
+.box3 { padding: 30px; }
 .box4 p { width: 1500px; }
-.box5 p {  }
+.box5 { padding: 30px; }
 .box6 { padding: 20px; }
 .inner-div { width: 50px; height: 3000px; background: #eee; }
