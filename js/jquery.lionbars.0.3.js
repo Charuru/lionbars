@@ -357,6 +357,9 @@
 		}
 		function needScrollbars(elem) {
 			var el = $(elem);
+			
+			if (el.find('.lb-v-scrollbar-slider').length) return false;
+			
 			addVScroll = false;
 			addHScroll = false;
 			
