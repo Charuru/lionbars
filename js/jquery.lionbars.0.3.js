@@ -159,13 +159,10 @@
 							hEventFired = false;
 						}]);
 					}
-					
+				})
+				.mouseenter(function(e) {
 					if (autohide) {
 						el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeIn(150);
-						clearTimeout(timeout);
-						timeout = setTimeout(function() {
-							el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeOut(150);
-						}, 2000);
 					}
 				});
 			}
