@@ -84,24 +84,15 @@
 	<script src="js/lib/jquery-1.6.4.min.js"></script>
 	<script src="js/jquery.lionbars.0.3.js"></script>
 	<script>
-		$('.box').lionbars({
-			autohide: false,
+		/*$('.box').lionbars({
+			autohide: true,
 			reachedBottom: function (callback) {
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				$(this).append('<div>asdasdasdasdasdasd</div>');
-				
-				callback.call();
-			},
-			reachedRight: function (callback) {
-                callback.call();
-            }
-		});
+				var children = $(this).children().clone();
+				$(this).append(children);
+			}
+		});*/
+		$('#box1').lionbars();
+		$('#box1').html('<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>').lionbars();
 	</script>
 </body>
 </html>
