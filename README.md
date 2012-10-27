@@ -42,20 +42,16 @@ LionBars gives you the opporunity to autohide the scrollbars so that they will o
 
 ### EndlessScroll
 
-This feature makes it possible to react on reaching either to bottom o the right of the scrolled content. If you pass some handlers to the options they will be called and you can modify the content and update it. Important is that you call the *callback* function so that lionbars can update its scrollbars and sliders.
+This feature makes it possible to react on reaching either to bottom o the right of the scrolled content. If you pass some handlers to the options they will be called and you can modify the content and update it.
 
     $('div').lionbars({
-        reachedBottom: function (callback) {
+        reachedBottom: function () {
             // do something with the content
             $(this).append('your html');
-            
-            callback.call();
         },
-        reachedRight: function (callback) {
+        reachedRight: function () {
             // do something with the content
             $(this).append('your html');
-            
-            callback.call();
         }
     });
 
@@ -67,6 +63,8 @@ Thank you for your interest LionBars!
 
 If you wish to contribute, make sure you contact me at me@nikolaydyankov.com
 
-Developers
+#### Developers
 <a href="http://www.nikolaydyankov.com">Nikolay Dyankov</a>
-<a href="http://github.com/kersten">Kersten Burkhardt</a>
+
+#### Thanks to
+<a href="http://github.com/kersten">Kersten Burkhardt</a> For implementing endless scroll

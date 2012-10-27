@@ -1,54 +1,51 @@
-(function( $ ) {
+(function($) {
     $.fn.hasScrollBar = function() {
         return this.get(0).scrollHeight > this.height();
     };
-	$.fn.lionbars = function(options) {
-		options = options || {};
-		autohide = options.autohide;
-		
-		// Flags
-		var timeout,
-			HDragging=false,
-			VDragging=false,
-			activeScroll=0,
-			activeWrap=0,
-			eventX,
-			eventY,
-			mouseX,
-			mouseY,
-			currentRatio,
-			initPos,
-			scrollValue,
-			hideTimeoutSet=false,
-			vEventFired = false,
-			hEventFired = false;
-		
+    $.fn.lionbars = function(options) {
+        options = options || {};
+        autohide = options.autohide;
+        // Flags
+        var timeout,HDragging=false,VDragging=false,activeScroll=0,activeWrap=0,eventX,eventY,mouseX,mouseY,
+        currentRatio,initPos,scrollValue,hideTimeoutSet=false,vEventFired = false,hEventFired = false;
 		// Initialization
-		var elements = $(this),
-			id = 0,
-			vScrollWidth=0, hScrollWidth=0,
-			addHScroll=false, addVScroll=false,
-			paddingTop=0, paddingLeft=0, paddingBottom=0, paddingRight=0,
-			borderTop=0, borderRight=0, borderBottom=0, borderLeft=0,
-			scrollHeight=0, scrollWidth=0, offsetWidth=0, offsetHeight=0, clientWidth=0, clientHeight=0,
-			vRatio=0, hRatio=0,
-			vSliderHeight=0, hSliderHeight=0,
-			vLbHeight=0, hLbHeight=0;
-		
+		var elements = $(this),id = 0,vScrollWidth=0, hScrollWidth=0,addHScroll=false, addVScroll=false,paddingTop=0, paddingLeft=0, paddingBottom=0, paddingRight=0,
+		borderTop=0, borderRight=0, borderBottom=0, borderLeft=0,scrollHeight=0, scrollWidth=0, offsetWidth=0, offsetHeight=0, clientWidth=0, clientHeight=0,vRatio=0, hRatio=0,
+		vSliderHeight=0, hSliderHeight=0,vLbHeight=0, hLbHeight=0;
 		// Main Loop
-		mainLoop();
-		
-		function mainLoop() {
-			for (var i=0; elements[i] !== undefined; i++) {
+        this.mainLoop = function() {
+            for(var i=0; elements[i] !== undefined; i++) {
+                if(needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars')) {
+                    // add the element to the main array
+                    target = elements[i];
+					// get some values before the element is wrapped
+					getDimentions(target);
+					// wrap the element
+					wrap(target, addVScroll, addHScroll);
+					// hide the default scrollbar
+					hideScrollbars(target, addVScroll, addHScroll);
+					// Calculate the size of the scrollbars
+					reduceScrollbarsWidthHeight(target);
+					setSlidersHeight(target);
+					// Set variables needed to calculate scroll speed, etc.
+					setScrollRatios(target);
+					// Set events
+					setEvents(target);
+					// prepare for next element
+					resetVars();
+				}
+			}
+		}
+		this.mainLoop();
+        
+        this.Update = function() {
+			for(var i=0; elements[i] !== undefined; i++) {
 				if (needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars')) {
 					// add the element to the main array
 					target = elements[i];
 					
 					// get some values before the element is wrapped
-					getDimentions(target);
-					
-					// wrap the element
-					wrap(target, addVScroll, addHScroll);
+					getDimentions(target, false, true);
 					
 					// hide the default scrollbar
 					hideScrollbars(target, addVScroll, addHScroll);
@@ -68,14 +65,26 @@
 				}
 			}
 		}
+        this.scrollToBottom = function() {
+            for(var i=0; elements[i] !== undefined; i++) {
+				if(needScrollbars(elements[i]) && !$(elements[i]).hasClass('nolionbars')) {
+					target = elements[i];
+                    getDimentions(target, false, true);
+                    var b = $(target).find('.lb-wrap');
+                    var c = b.parent().attr('vratio');
+                    var m = (scrollHeight - clientHeight) * Math.abs(c);
+					b.scrollTop(m);
+				}
+			}
+		}
 		
 		// Set document events
 		$(document).mousemove(function(e) {
-			if (VDragging) {
+			if(VDragging) {
 				mouseY = e.pageY;
 				activeWrap.scrollTop((initPos + mouseY - eventY) * Math.abs(currentRatio));
 			}
-			if (HDragging) {
+			if(HDragging) {
 				mouseX = e.pageX;
 				activeWrap.scrollLeft((initPos + mouseX - eventX) * Math.abs(currentRatio));
 			}
@@ -92,13 +101,12 @@
 		// Core functions
 		function setEvents(elem) {
 			var el = $(elem);
-			
-			if (addVScroll || addHScroll) {
+			if(addVScroll || addHScroll) {
 				el.find('.lb-wrap').scroll(function(e) {
-					el.find('.lb-v-scrollbar-slider').css({ "top" : -$(this).scrollTop()/el.attr('vratio') });
-					el.find('.lb-h-scrollbar-slider').css({ "left" : -$(this).scrollLeft()/el.attr('hratio') });
+					el.find('.lb-v-scrollbar-slider').css({"top" : -$(this).scrollTop()/el.attr('vratio') });
+					el.find('.lb-h-scrollbar-slider').css({"left" : -$(this).scrollLeft()/el.attr('hratio') });
 					
-					if (el.find('.lb-v-scrollbar').height() == (parseInt(el.find('.lb-v-scrollbar-slider').css('top')) + el.find('.lb-v-scrollbar-slider').height())
+					if(el.find('.lb-v-scrollbar').height() == (parseInt(el.find('.lb-v-scrollbar-slider').css('top')) + el.find('.lb-v-scrollbar-slider').height())
 						&& typeof(options.reachedBottom) == 'function'
 						&& !vEventFired
 					) {
@@ -162,10 +170,9 @@
 				});
 			}
 			
-			if (addVScroll) {
+			if(addVScroll) {
 				el.find('.lb-v-scrollbar-slider').mousedown(function(e) {
 					eventY = e.pageY;
-				
 					VDragging = true;
 					activeScroll = $(this);
 					activeWrap = el.find('.lb-wrap');
@@ -181,10 +188,9 @@
 				});
 			}
 			
-			if (addHScroll) {
+			if(addHScroll) {
 				el.find('.lb-h-scrollbar-slider').mousedown(function(e) {
 					eventX = e.pageX;
-					
 					HDragging = true;
 					activeScroll = $(this);
 					activeWrap = el.find('.lb-wrap');
@@ -221,15 +227,15 @@
 			var el = $(elem);
 			var hmin, hmax, gap;
 			
-			if (el.find('.lb-v-scrollbar').length != 0) {
+			if(el.find('.lb-v-scrollbar').length != 0) {
 				hmin = 20;
 				gap = offsetHeight - el.find('.lb-v-scrollbar').height();
 				hmax = offsetHeight - gap - hmin;
 				vSliderHeight = Math.round((offsetHeight*hmax)/scrollHeight);
 				vSliderHeight = (vSliderHeight < hmin) ? hmin : vSliderHeight;
 			}
-			
-			if (el.find('.lb-h-scrollbar').length != 0) {
+            
+			if(el.find('.lb-h-scrollbar').length != 0) {
 				hmin = 20;
 				gap = offsetWidth - el.find('.lb-h-scrollbar').width();
 				hmax = offsetWidth - gap - hmin;
@@ -396,16 +402,17 @@
 			borderBottom = parseInt(el.css('border-bottom-width').replace('px', ''));
 			borderLeft = parseInt(el.css('border-left-width').replace('px', ''));
 		}
-		function getDimentions(elem, scroll) {
+		function getDimentions(elem, scroll, update) {
 			var el = $(elem).get(0);
-			
-			scrollHeight = (typeof(scroll) != 'undefined') ? scroll.height : el.scrollHeight;
-			scrollWidth = (typeof(scroll) != 'undefined') ? scroll.width : el.scrollWidth;
+			if(update) {
+			 el = $(el).find('.lb-wrap').get(0);
+			}
+			scrollHeight = (typeof(scroll) != 'undefined' && scroll != false) ? scroll.height : el.scrollHeight;
+			scrollWidth = (typeof(scroll) != 'undefined' && scroll != false) ? scroll.width : el.scrollWidth;
 			clientHeight = el.clientHeight;
 			clientWidth = el.clientWidth;
 			offsetHeight = el.offsetHeight;
 			offsetWidth = el.offsetWidth;
-			
 			setVScrollbarWidth($(elem));
 			setHScrollbarWidth($(elem));
 		}
@@ -414,4 +421,4 @@
 			//var $this = $(this);
 		});
 	};
-})( jQuery );
+})(jQuery);
