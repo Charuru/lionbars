@@ -1,7 +1,7 @@
 # LionBars
 
 LionBars is a jQuery plugin that styles default scrollbars to look and behave like in OSX Lion.
-Please check out the demo at http://nikolaydyankov.github.com/lionbars/
+Please check out the demo at http://charuru.github.com/lionbars/
 
 1. Main features
 2. How to use
