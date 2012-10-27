@@ -80,21 +80,27 @@
 		
 		// Set document events
 		$(document).mousemove(function(e) {
-			if(VDragging) {
-				mouseY = e.pageY;
-				activeWrap.scrollTop((initPos + mouseY - eventY) * Math.abs(currentRatio));
-			}
-			if(HDragging) {
-				mouseX = e.pageX;
-				activeWrap.scrollLeft((initPos + mouseX - eventX) * Math.abs(currentRatio));
+			if (HDragging || VDragging) {
+				activeWrap.parent().find('.lb-v-scrollbar, .lb-h-scrollbar').show();
+				if(VDragging) {
+					mouseY = e.pageY;
+					activeWrap.scrollTop((initPos + mouseY - eventY) * Math.abs(currentRatio));
+				}
+				if(HDragging) {
+					mouseX = e.pageX;
+					activeWrap.scrollLeft((initPos + mouseX - eventX) * Math.abs(currentRatio));
+				}
 			}
 		});
 		$(document).mouseup(function(e) {
-			if (VDragging) {
-				VDragging = false;
-			}
-			if (HDragging) {
-				HDragging = false;
+			if (HDragging || VDragging) {
+				activeWrap.parent().find('.lb-v-scrollbar, .lb-h-scrollbar').fadeOut(150);
+				if (VDragging) {
+					VDragging = false;
+				}
+				if (HDragging) {
+					HDragging = false;
+				}
 			}
 		});
 		
@@ -102,7 +108,7 @@
 		function setEvents(elem) {
 			var el = $(elem);
 			if(addVScroll || addHScroll) {
-				el.find('.lb-wrap').scroll(function(e) {
+				el.find('.lb-wrap').on('scroll', function(e) {
 					el.find('.lb-v-scrollbar-slider').css({"top" : -$(this).scrollTop()/el.attr('vratio') });
 					el.find('.lb-h-scrollbar-slider').css({"left" : -$(this).scrollLeft()/el.attr('hratio') });
 					
@@ -159,14 +165,6 @@
 							hEventFired = false;
 						}]);
 					}
-					
-					if (autohide) {
-						el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeIn(150);
-						clearTimeout(timeout);
-						timeout = setTimeout(function() {
-							el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeOut(150);
-						}, 2000);
-					}
 				});
 			}
 			
@@ -197,7 +195,7 @@
 					currentRatio = activeWrap.parent().attr('hratio');
 					initPos = activeScroll.position().left;
 					return false;					
-				});
+				})
 				el.find('.lb-h-scrollbar').mousedown(function(e) {
 					if (!$(e.target).hasClass('lb-h-scrollbar-slider')) {
 						el.find('.lb-wrap').scrollLeft((e.pageX - $(this).offset().left) * Math.abs(el.attr('hratio')) - $(this).find('.lb-h-scrollbar-slider').width()/2);
@@ -210,7 +208,10 @@
 				el.find('.lb-v-scrollbar, .lb-h-scrollbar').hide();
 				
 				el.hover(function() {
+					$(this).data('hover', true);
+					el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeIn(150);
 				}, function() {
+					$(this).data('hover', false);
 					el.find('.lb-v-scrollbar, .lb-h-scrollbar').fadeOut(150);
 				});
 			}
@@ -363,19 +364,24 @@
 			addVScroll = false;
 			addHScroll = false;
 			
+			if (el.find('.lb-v-scrollbar-slider').length) return false;
+			
 			getPadding(el);
 			getBorders(el);
+			
+			var overflowY = el.css('overflow-y');
+			var overflowX = el.css('overflow-x');
 			
 			el.css({ "overflow" : 'hidden' });
 			
 			// check for vertical scrollbars
-			if (el.get(0).scrollHeight > el.get(0).clientHeight) {
+			if (overflowY != 'hidden' && el.get(0).scrollHeight > el.get(0).clientHeight) {
 				addVScroll = true;
 				// setVScrollbarWidth(el);
 			}
 			
 			// check for horizontal scrollbars
-			if (el.get(0).scrollWidth > el.get(0).clientWidth) {
+			if (overflowX != 'hidden' && el.get(0).scrollWidth > el.get(0).clientWidth) {
 				addHScroll = true;
 				// setHScrollbarWidth(el);
 			}
